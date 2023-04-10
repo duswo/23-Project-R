@@ -1,5 +1,182 @@
 # 👩 **2377112 이연재**
 ## 📓 R 언어
+## 📅 230406
+6. iris 데이터셋
+ - iris는 150그루의 붓꽃에 대해 4개 분야의 측정 데이터와 품종 정보를 결합하여 만든 데이터셋
+ ```
+ > iris
+    Sepal.Length Sepal.Width Petal.Length Petal.Width   Species
+ 1           5.1         3.5          1.4         0.2    setosa
+ 2           4.9         3.0          1.4         0.2    setosa
+ 3           4.7         3.2          1.3         0.2    setosa
+ ...(생략)
+ 150         5.9         3.0          5.1         1.8  virginica
+ ```
+ ```
+ iris[,c(1:2)] # 1~2열의 모든 데이터
+ iris[,c(1,3,5)] # 1, 3, 5열의 모든 데이터
+ iris[,c("Sepal.Length","Species")] # 1, 5열의 모든 데이터
+ iris[1:5,] # 1~5행의 모든 데이터
+ iris[1:5,c(1,3)] # 1~5행의 데이터 중 1, 3열의 데이터
+ ```
+ - 데이터셋의 기본 정보
+ ```
+ dim(iris) # 행과 열의 개수 보이기
+ nrow(iris) # 행의 개수 보이기
+ ncol(iris) # 열의 개수 보이기
+ colnames(iris) # 열 이름 보이기, names() 함수와 결과 동일
+ head(iris) # 데이터셋의 앞부분 일부 보기
+ tail(iris) # 데이터셋의 뒷부분 일부 보기
+ ```
+ ```
+ str(iris) # 데이터셋 요약 정보 보기
+ iris[,5] # 품종 데이터 보기
+ levels(iris[,5]) # 품종의 종류 보기(중복 제거)
+ table(iris[,"Species"]) # 품종의 종류별 행의 개수 세기
+ ```
+ - 행별, 열별로 합계와 평균 계산
+ ```
+ colSums(iris[,-5]) # 열별 합계
+ colMeans(iris[,-5]) # 열별 평균
+ rowSums(iris[,-5]) # 행별 합계
+ rowMeans(iris[,-5]) # 행별 평균
+ ```
+ ```
+ > colSums(iris[,-5])                   # 열별 합계
+ Sepal.Length Sepal.Width Petal.Length Petal.Width
+        876.5       458.6        563.7       179.9
+ > colMeans(iris[,-5])                  # 열별 평균
+ Sepal.Length Sepal.Width Petal.Length Petal.Width
+     5.843333    3.057333     3.758000    1.199333
+ > rowSums(iris[,-5])
+   [1] 10.2 9.5  9.4  9.4 10.2 11.4  9.7 10.1  8.9  9.6 10.8 10.0
+  [13]  9.3 8.5 11.2 12.0 11.0 10.3 11.5 10.7 10.7 10.7  6.4 10.6
+  ...(생략)
+ [133] 17.0 15.7 15.7 19.1 17.7 16.8 15.6 17.5 17.8 17.4 15.5 18.2
+ [145] 18.2 17.2 15.7 16.7 17.3 15.8
+ ```
+ - 조건에 맞는 행과 열 값 추출
+ ```
+ IR.1 <- subset(iris, Species=='setosa')
+ IR.1
+ IR.2 <- subset(iris, Sepal.Length>5.0 &
+                       Sepal.Width>4.0)
+ IR.2
+ IR.2[, c(2,4)]    # 2열과 4열의 값만 추출
+ ```
+ - subset() 함수 매개변수
+   - iris : 데이터를 추출하는 대상이 iris 데이터셋
+   - Species=='setosa' : 데이터를 추출할 조건을 지정하는 부분, 
+                        품종 열의 값이 'setosa'인 행만 추출하라는 의미.
+- 산술연산 적용
+```
+> a <- matrix(1:20,4,5)
+> a
+     [,1] [,2] [,3] [,4] [,5]
+[1,]    1    5    9   13   17
+[2,]    2    6   10   14   18
+[3,]    3    7   11   15   19
+[4,]    4    8   12   16   20
+> a <- a*3
+     [,1] [,2] [,3] [,4] [,5]
+[1,]    3   15   27   39   51
+[2,]    6   18   30   42   54
+[3,]    9   21   33   45   57
+[4,]   12   24   36   48   60
+```
+- 자료구조 확인하기
+```
+class(iris) # iris 데이터셋 자료구조 확인
+is.matrix(iris) # 데이터셋이 매트릭스인지 확인하는 함수
+is.data.frame(iris) # 데이터셋이 데이터프레임인지 확인하는 함수
+```
+- 매트릭스와 데이터프레임 자료구조 변환
+```
+# 매트릭스를 데이터프레임으로 변환
+is.matrix(state.x77)
+st <- data.frame(state.x77)
+head(st)
+class(st)
+
+# 데이터프레임을 매트릭스로 변환
+is.data.frame(iris[,1:4]
+iris.m <- as.matrix(iris[,1:4])
+head(iris.m)
+class(iris.m)
+```
+- 데이터프레임에만 적용되는 열 추출 방법
+```
+iris[,"Species"] # 결과가 벡터-매트릭스, 데이터프레임 모두 가능
+iris[,5] # 결과가 벡터-매트릭스, 데이터프레임 모두 가능
+iris["Species"] # 결과가 데이터프레임-데이터프레임만 가능
+iris[5] # 결과가 데이터프레임-데이터프레임만 가능
+iris&Species # 결과가 벡터-데이터프레임만 가능
+```
+### 데이터 입출력
+1. R에서의 입출력
+   자료의 입력 -> 자료의 처리/정보의 추출 -> 처리 결과 출력
+```
+# 데이터 입력
+age <- c(28, 17, 35, 46, 23, 67, 30, 50)
+age
+# 정보 추출
+young <- min(age)
+old <- max(age)
+# 처리 결과 출력
+cat('가장 젊은 사람의 나이는 ', young, '이고',
+    '가장 나이든 사람의 나이는', old, '입니다,\n')
+```
+2. 화면에서 데이터 입력받기
+```
+install.packages('svDialogs')   # 패키지 설치
+library(svDialogs)
+user.input <- dlgInput('Input income')$res
+user.input
+income <- as.numeric(user.input)   # 문자열을 숫자로 계산
+income
+tax <- income * 0.05   # 세금 계산
+cat('세금: ', tax)
+```
+3. print()함수 vs cat()함수
+     |함수|특징|
+     |------|---|
+     |print()|- 하나의 값을 출력할 때 - 데이터프레임과 같은 2차원 자료구조를 출력할 때 - 출력 후 자동 줄바꿈|
+     |cat()|- 여러 개의 값을 연결해서 출력할 때(벡터는 출력되나 2차원 자료구조는 출력되지 않음 - 출력 후 줄바꿈을 하라면 '\n' 필요|
+4. 작업 폴더
+   자신이 읽거나 쓰고자 하는 파일이 위치하는 폴더
+   ```
+   getwd() # 현재 작업 폴더 알아내기
+   setwd('C:/Rworks') # 작업 폴더 변경하기
+   getwd()
+   ```
+5. csv 파일 읽기와 쓰기
+   R에서 데이터 분석을 위해 가장 많이 사용하는 파일 형태
+   - csv 파일에서 데이터 읽기
+   ```
+   setwd('C:/Rworks') # 작업 폴더 지정
+   air <- read.csv('airquality.csv', header=T) # .csv 파일 읽기
+   header(air)
+   class(air) # air의 자료구조 확인
+   ```
+   - csv 파일에서 데이터 쓰기
+   ```
+   setwd('C:/Rworks') # 작업 폴더 지정
+   my.iris <- subset(iris, Species=='setosa') # setosa 풍속 데이터만 추출
+   write.csv(my.iris, 'my_iris.csv', row.name=F) # .csv 파일에 저장하기
+   ```
+6. 엑셀 파일 읽기와 쓰기
+   ```
+   install.packages('xlsx') # 패키지 설치하기
+   library(xlsx) # 패키지 불러오기
+   air <- read.xlsx('C:/Rworks/airquality.xlsx', header=T,
+                     sheetIndex=1) # .xlsx 파일 읽기
+   head(air)
+   ```
+   ```
+   library(xlsx) # 패키지 불러오기
+   my.iris <- subset(iris, Speciess=='setosa') # iris 데이터셋에서 setosa 품종의 행들만 추출하여 my.iris.에 저장
+   write.xlsx(my.iris, 'my_iris.xlsx', row.names=F) # 파일에 저장하기
+   ```
 ## 📅 230330
 ### 자료의 종류
   1. 1차원 자료 : 단일 주제에 대한 값들의 모아 놓은 자료 (ex 벡터, 리스트, 팩터)
@@ -98,7 +275,13 @@ d >= 5
   [4, ]   4    8   12   16   20
   ```
 2 데이터프레임(data frame) : 서로 다른 종류의 데이터 저장
-  
+  - 숫자형 자료와 문자형 자료가 결합되어 있는 형태
+  ```
+  city <- c("Seoul", "Tokyo", "Washington") # 문자로 이루어진 벡터
+  rank <- c(1,3,2) # 숫자로 이루어진 벡터
+  city.info <- data.frame(city, rank) # 데이터프레임 생성
+  city.info # city.info의 내용 출력
+  ```
 ## 📅 230323
 ### R 패키지
   1. 패키지(package) ?
@@ -144,8 +327,6 @@ d >= 5
   - y = f(x)
   - 어떤 값 x를 입력받아 정해진 계산 수행 후 결과값f(x)를 돌려주는 것
   - 매개변수(parameter) : 입력 값을 받는 변수
-
-##    
 ## 📅 230316
 ### R 언어의 특징
 1. 미적이고 기능적인 통계 그래프 제공
