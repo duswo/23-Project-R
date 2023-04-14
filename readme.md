@@ -3,7 +3,7 @@
 ## 📅 230406
 6. iris 데이터셋
  - iris는 150그루의 붓꽃에 대해 4개 분야의 측정 데이터와 품종 정보를 결합하여 만든 데이터셋
- ```
+ ```R
  > iris
     Sepal.Length Sepal.Width Petal.Length Petal.Width   Species
  1           5.1         3.5          1.4         0.2    setosa
@@ -12,7 +12,7 @@
  ...(생략)
  150         5.9         3.0          5.1         1.8  virginica
  ```
- ```
+ ```R
  iris[,c(1:2)] # 1~2열의 모든 데이터
  iris[,c(1,3,5)] # 1, 3, 5열의 모든 데이터
  iris[,c("Sepal.Length","Species")] # 1, 5열의 모든 데이터
@@ -20,7 +20,7 @@
  iris[1:5,c(1,3)] # 1~5행의 데이터 중 1, 3열의 데이터
  ```
  - 데이터셋의 기본 정보
- ```
+ ```R
  dim(iris) # 행과 열의 개수 보이기
  nrow(iris) # 행의 개수 보이기
  ncol(iris) # 열의 개수 보이기
@@ -28,20 +28,20 @@
  head(iris) # 데이터셋의 앞부분 일부 보기
  tail(iris) # 데이터셋의 뒷부분 일부 보기
  ```
- ```
+ ```R
  str(iris) # 데이터셋 요약 정보 보기
  iris[,5] # 품종 데이터 보기
  levels(iris[,5]) # 품종의 종류 보기(중복 제거)
  table(iris[,"Species"]) # 품종의 종류별 행의 개수 세기
  ```
  - 행별, 열별로 합계와 평균 계산
- ```
+ ```R
  colSums(iris[,-5]) # 열별 합계
  colMeans(iris[,-5]) # 열별 평균
  rowSums(iris[,-5]) # 행별 합계
  rowMeans(iris[,-5]) # 행별 평균
  ```
- ```
+ ```R
  > colSums(iris[,-5])                   # 열별 합계
  Sepal.Length Sepal.Width Petal.Length Petal.Width
         876.5       458.6        563.7       179.9
@@ -56,7 +56,7 @@
  [145] 18.2 17.2 15.7 16.7 17.3 15.8
  ```
  - 조건에 맞는 행과 열 값 추출
- ```
+ ```R
  IR.1 <- subset(iris, Species=='setosa')
  IR.1
  IR.2 <- subset(iris, Sepal.Length>5.0 &
@@ -69,7 +69,7 @@
    - Species=='setosa' : 데이터를 추출할 조건을 지정하는 부분, 
                         품종 열의 값이 'setosa'인 행만 추출하라는 의미.
 - 산술연산 적용
-```
+```R
 > a <- matrix(1:20,4,5)
 > a
      [,1] [,2] [,3] [,4] [,5]
@@ -85,13 +85,13 @@
 [4,]   12   24   36   48   60
 ```
 - 자료구조 확인하기
-```
+```R
 class(iris) # iris 데이터셋 자료구조 확인
 is.matrix(iris) # 데이터셋이 매트릭스인지 확인하는 함수
 is.data.frame(iris) # 데이터셋이 데이터프레임인지 확인하는 함수
 ```
 - 매트릭스와 데이터프레임 자료구조 변환
-```
+```R
 # 매트릭스를 데이터프레임으로 변환
 is.matrix(state.x77)
 st <- data.frame(state.x77)
@@ -105,7 +105,7 @@ head(iris.m)
 class(iris.m)
 ```
 - 데이터프레임에만 적용되는 열 추출 방법
-```
+```R
 iris[,"Species"] # 결과가 벡터-매트릭스, 데이터프레임 모두 가능
 iris[,5] # 결과가 벡터-매트릭스, 데이터프레임 모두 가능
 iris["Species"] # 결과가 데이터프레임-데이터프레임만 가능
@@ -115,7 +115,7 @@ iris&Species # 결과가 벡터-데이터프레임만 가능
 ### 데이터 입출력
 1. R에서의 입출력
    자료의 입력 -> 자료의 처리/정보의 추출 -> 처리 결과 출력
-```
+```R
 # 데이터 입력
 age <- c(28, 17, 35, 46, 23, 67, 30, 50)
 age
@@ -127,7 +127,7 @@ cat('가장 젊은 사람의 나이는 ', young, '이고',
     '가장 나이든 사람의 나이는', old, '입니다,\n')
 ```
 2. 화면에서 데이터 입력받기
-```
+```R
 install.packages('svDialogs')   # 패키지 설치
 library(svDialogs)
 user.input <- dlgInput('Input income')$res
@@ -144,7 +144,7 @@ cat('세금: ', tax)
      |cat()|- 여러 개의 값을 연결해서 출력할 때(벡터는 출력되나 2차원 자료구조는 출력되지 않음 - 출력 후 줄바꿈을 하라면 '\n' 필요|
 4. 작업 폴더
    자신이 읽거나 쓰고자 하는 파일이 위치하는 폴더
-   ```
+   ```R
    getwd() # 현재 작업 폴더 알아내기
    setwd('C:/Rworks') # 작업 폴더 변경하기
    getwd()
@@ -152,27 +152,27 @@ cat('세금: ', tax)
 5. csv 파일 읽기와 쓰기
    R에서 데이터 분석을 위해 가장 많이 사용하는 파일 형태
    - csv 파일에서 데이터 읽기
-   ```
+   ```R
    setwd('C:/Rworks') # 작업 폴더 지정
    air <- read.csv('airquality.csv', header=T) # .csv 파일 읽기
    header(air)
    class(air) # air의 자료구조 확인
    ```
    - csv 파일에서 데이터 쓰기
-   ```
+   ```R
    setwd('C:/Rworks') # 작업 폴더 지정
    my.iris <- subset(iris, Species=='setosa') # setosa 풍속 데이터만 추출
    write.csv(my.iris, 'my_iris.csv', row.name=F) # .csv 파일에 저장하기
    ```
 6. 엑셀 파일 읽기와 쓰기
-   ```
+   ```R
    install.packages('xlsx') # 패키지 설치하기
    library(xlsx) # 패키지 불러오기
    air <- read.xlsx('C:/Rworks/airquality.xlsx', header=T,
                      sheetIndex=1) # .xlsx 파일 읽기
    head(air)
    ```
-   ```
+   ```R
    library(xlsx) # 패키지 불러오기
    my.iris <- subset(iris, Speciess=='setosa') # iris 데이터셋에서 setosa 품종의 행들만 추출하여 my.iris.에 저장
    write.xlsx(my.iris, 'my_iris.xlsx', row.names=F) # 파일에 저장하기
@@ -185,13 +185,13 @@ cat('세금: ', tax)
   4. 수치형 자료 : 값들이 크기를 가지며 산술연산 가능 
 ### 백터 연산
 1. 벡터에 대한 산술연산은 벡터 안에 포함된 값들 하나하나에 대한 연산으로 바뀌어 실행
-```
+```R
 d <- c(1,4,3,7,8)
 2*d
 [1] 2 8 6 14 16
 ```
 2. 벡터와 벡터의 연산 : 벡터 간 대응되는 위치의 값들끼리 연산
-```
+```R
 x <- c(1,2,3,4)
 y <- c(5,6,7,8)
 z <- x+ y
@@ -219,7 +219,7 @@ z
      |!=|A!=B|A와 B가 같지 않으면 TRUE|
      |&|A&B|A와 B모두 TRUE일 때만 TRUE|
  6. 벡터와 벡터의 연산 : 벡터 간 대응되는 위치의 값들끼리 연산
-```
+```R
 d <- 1:9
 d >= 5
 [1] FALSE FALSE FALSE FALSE TRUE TRUE TRUE TRUE TRUE
@@ -227,7 +227,7 @@ d >= 5
 ### 팩터와 리스트
 1. 팩터(facotr)
    문자형 데이터가 저장되는 벡터, 저장되는 문자값들이 어떠한 종류를 나타내는 값일 때 사용
-   ```
+   ```R
    bt <- c('A', 'B', 'B', 'O', 'AB','A') # 문자형 벡터 bt 정의
    bt.new <- factor(bt) # 팩터 bt.new 정의
    bt # 벡터 bt의 내용 출력
@@ -241,18 +241,18 @@ d >= 5
    ```
 2. 리스트(list)
    자료형이 다른 값들을 한곳에 저장
-   ```
+   ```R
    이름 : 'Tom' 나이 : 25
    학생 여부 : TRUE 취미 : 'balling', 'tennis', 'ski'
    ```
-   ```
+   ```R
    h.list <- c('balling', 'tennis', 'ski')
    person <- list(name='Tom', 
                   age=25,
                   student=TRUE, 
                   hobby=h.list)
    ```
-   ```
+   ```R
    person[[1]]
    [1] "Tom"
    person$age
@@ -265,7 +265,7 @@ d >= 5
   - 가로줄 : 행 or 관측값
   - 세로줄 : 열 or 컬럼 or 변수
   - 보통 숫자로만 구성된 2차원 자료 저장
-  ```
+  ```R
   z <- matrix(1:20, nrow=4, ncol=5)
   z
        [,1] [,2] [,3] [,4] [,5]
@@ -276,7 +276,7 @@ d >= 5
   ```
 2 데이터프레임(data frame) : 서로 다른 종류의 데이터 저장
   - 숫자형 자료와 문자형 자료가 결합되어 있는 형태
-  ```
+  ```R
   city <- c("Seoul", "Tokyo", "Washington") # 문자로 이루어진 벡터
   rank <- c(1,3,2) # 숫자로 이루어진 벡터
   city.info <- data.frame(city, rank) # 데이터프레임 생성
