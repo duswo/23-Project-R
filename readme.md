@@ -1,5 +1,294 @@
 # 👩 **2377112 이연재**
 ## 📓 R 언어
+## 📅 230414
+> 파일 입출력
+1. 실행 결과 파일로 출력
+```R
+> sink('result.txt', append=T) # 파일로 출력 시작
+> cat('a+b=', a+b, '/n')
+> sink() # 파일로 출력 정지
+```
+- 처리 결과를 파일로 출력하는 코드
+- 프로그램 중간에 파일로 출력하고 싶은 부분에서 sink() 함수를 위아래 넣음
+- sink( ) 함수 매개변수
+  - 'result.txt' : 계산 결과를 출력할 파일 이름.
+  - append=T :'result.txt'의 내용 맨 마지막에 덧붙여서 출력
+               append=F이면 기존에 있던 내용을 지우고 새로 출력하는 것
+```R
+> cat('hello world \n') # 화면으로 출력
+hello world
+```
+- cat('hello world \n')의 실행 결과가 다시 화면에 출력
+```R
+> sink('rewult.txt', append=T) # 파일로 출력 시작
+> cat('a*b=', a*b, '\n')
+> sink() # 파일로 출력 정지
+```
+- cat('a*b=', a*b, '\n')의 실행 결과는 화면에 보이지 않음
+```R
+> print('End work') # 화면으로 출력
+[1] "End work"
+``` 
+- 실행 결과가 다시 화면에 출력
+2. 탭이나 공백으로 분리된 파일 읽기
+```R
+setwd('C:/Rworks') # 작업 폴더 지정
+air <- read.table('airquality.txt', header=T, set=' ') # 파일 읽기
+head(air) # 내용 확인
+```
+```R
+실행결과
+> setwd('C:/Rworks') # 작업 폴더 지정
+```
+- 읽어올 파일이 있는 폴더를 지정
+```R
+> head(air) # 내용 확인
+  Ozone  Solar.R   Wind  Temp  Month  Day
+1    41      190    7.4    67      5    1
+2    36      118    8.0    72      5    2
+3    12      149   12.6    74      5    3
+4    18      313   11.5    62      5    4  
+5    NA       NA   14.3    56      5    5
+6    28       NA   14.9    66      5    6
+```
+- 읽어온 파일 내용 확인
+```R
+> air <- read.table('airquality.txt', header=T, sep='  ') # 파일 읽기
+```
+- 파일을 읽어 데이터프레임 air에 저장
+- read.table( ) 함수 매개변수
+  - 'airquality.txt' : 읽어올 파일의 이름
+  - header=T : 파일의 첫 줄(첫 번째 행)은 데이터 값이 아닌 열 이름
+  - sep=' ' : 데이터에서 열과 열이 공백(' ')으로 분리되어 있음
+> 조건문
+1. if-else 문
+```R
+job.type <- 'A'
+if (job.type == 'B') {
+    bonus <- 200
+} else {
+    bonus <- 100
+}
+print(bonus)
+```
+```R
+job.type <- 'A'
+bonus <- 100
+if (job.type == 'B') {
+    bonus <- 200
+}
+print(bonus)
+[1] 100
+```
+- if() 함수만으로도 조건문 성립 (else 없어도 됨)
+```R
+a <- 10
+if (a<5) {
+   print(a)
+} else {
+   print(a*10)
+   print(a/10)
+}
+```
+- {}는 프로그래밍에서 코드블록이 코드블록에 의해 묶인 명령문은 조건에 의해 모두 실행이 되든지, 모두 실행이 안 되는지 둘 중 하나
+```R
+a <- 10
+b <- 20
+if (a>5 & b>5) {
+    print(a+b)
+}
+if (a>5 | b>30) {
+    print(a*b)
+}
+```
+- 조건문과 조건문 연결 시 논리연산자 사용
+- & : 두 조건이 모두 만족 해야 참(True)
+- | : 두 조건 중 어느 하나만 만족하면 참(True)
+2. ifelse문
+- 조건에 따라 선택할 값이 각각 하나씩일 때 사용
+- ifelse(비교 조건, 조건이 참일 때 선택할 값, 조건이 거짓일 때 선택할 값)
+```R
+a <- 10
+b <- 20
+# if-else문
+if (a>b) {
+    c <- a
+} else {
+    c <- b
+}
+print(c)
+# ifelse문
+c <- ifelse(a>b, a, b)
+print(c)
+```
+> 반복문
+1. for문
+- 반복 범위는 박복 변수에 할당할 값을 모다운 벡터, 이 벡터의 길이만큼 for문이 반복됨
+- for문이 한 번씩 수행할 때마다 반복 범위의 값을 하나씩 가져와 반복 변수에 저장한 뒤 코드블록 안에 있는 명령문 실행
+```R
+for(반복 변수 in 반복 범위) {
+      반복할 명령문(들)
+  }
+```
+```R
+> for(i in 1:9) {
++     cat('2 *', i, '=', 2*i, '\n')
++ }
+2 * 1 = 2
+2 * 2 = 4
+...(생략)
+2 * 8 = 16
+2 * 9 = 18
+```
+- cat() 함수는 한 줄에 여러 개의 값을 결합하여 출력할 때 사용
+```R
+> for(i in 1:20) {
++     if(i%%2==0) {
++         cat(i, ' ')
++     }
++ }
+2 4 6 8 10 12 14 16 18 20
+```
+```R
+> sum <- 0
+> for(i in 1 :100) {
++     sum <- sum + i
++ }
+> print(sum)
+[1] 5050
+```
+```R
+norow <- nrow(iris) # iris의 행의 수
+mylabel <- c() # 비어있는 벡터 선언
+for(i in 1:norow) {
+    if (iris$Petal.Length[i] <= 1.6) { # 꽃잎의 길이에 따라 레이블 결정
+        mylabel[i] <- 'L'
+    } else if (iris$Petal.Length[i] >= 5.1) {
+        mylabel[i] <- 'H'
+    } else {
+        mylable[i] <- 'M'
+    }
+}
+print(mylabel) # 레이블 출력
+newds <- data.frame(iris$Petal.Length, mylabel) # 꽃잎 길이와 레이블 결합
+head(newds) # 새로운 데이터셋 내용 출력
+```
+2. while문
+```R
+sum <- 0
+i <- 1
+while(i <= 100) {
+    sum <- sum + i
+    i <- i + 1
+}
+print(sum)
+```
+3. apply() 계열 함수
+- 매트릭스나 데이터프레임에 있는 행, 열들을 하나하나 차례로 꺼내어 평균이나 합계 등을 구하는 작업 시 유용
+- apply(데이터셋, 행/열 방향 지정, 적용 함수)
+- 매개변수
+  - 데이터셋 : 반복 작업을 적용할 대상인 매트릭스 or 데이터프레임 이름 
+  - 행/열 방향 지정 : 행 방향 작업의 경우 1, 열 방향 작업의 경우 2 지정
+  - 적용 함수 : 반복 작업의 내용을 알려주는 것으로, R 함수이거나 사용자 정의 함수 지정
+ ```R
+ apply(iris[,1:4], 1, mean)
+ iris 데이터셋에서 4개의 열에 대해 행 방향으로 진행하면서 각 행의 평균(mean)을 계산하여 출력
+ apply(iris[,1:4], 2, mean) # 열 방향으로 함수 적용
+ iris 데이터셋에서 4개의 행에 대해 열 방향으로 진행하면서 각 행의 평균(mean)을 계산하여 출력
+ ```
+ > 사용자 정의 함수
+ 
+ 사용자가 스스로 만드는 함수
+ ```R
+ 함수명 <- function(매개변수 목록) {
+     실행할 명령문(들)
+     return(함수의 실행 결과)
+ }
+ ```
+ - 매개변수
+   - 함수명 : 사용자 정의 함수의 이름으로 사용자가 만들 수 있음
+   - 매개변수 목록 : 함수에 입력할 매개변수 이름을 지정
+   - 실행할 명령문(들) : 함수에서 처리하고 싶은 내용 작성
+   - 함수의 실행 결과 : 함수의 실행 결과를 반환, 반환 결과가 없으면 return() 함수 생략
+ ```R
+ mymax <- function(x,y) {
+     num.max <- x
+     if (y>x) {
+         num.max <- y
+     }
+     return(num.max)
+ }
+ ```
+ ```R
+ > mymax(10,15)
+ [1] 15
+ > a <- mymax(20,15)
+ > b <- mymax(31,45)
+ > print(a+b)
+ [1] 65
+ ```
+ 1. 매개변수에 기본값 설정
+ ```R
+> mydiv <- function(x,y=2) {
++   result <- x/y
++   return(result)
++ }
+> mydiv(x=10,y=3) # 매개변수 이름과 매개변수값을 쌍으로 입력
+[1] 3.333333
+> mydiv(10,3) # 매개변수값만 입력
+[1] 3.333333
+> mydiv(10) # x에 대한 값만 입력(y값 생략)
+[1] 5
+```
+2. 여러 개 값 반환
+```R
+myfunc <- function(x,y) {
+   val.sum <- x+y
+   val.mul <- x*y
+   return(list(sum=val.sum, mul=val.mul))
+}
+result <- myfunc(5,8)
+s <- result$sum
+m <- result$mul
+cat('5+8 =', s, '\n')
+cat('5*8 =', m, '\n')
+```
+3. 사용자 정의 함수의 저장과 재실행
+함수 작성 -> 함수 실행하여 R에 함수 등록 -> 필요한 곳에서 함수 호출
+```R
+mydiv <- function(x,y=2) {
+    result <- x/y
+    return(result)
+}
+```
+```R
+setwd('c:/Rworks') # myfunc.R이 저장된 폴더
+source('myfunc.R') # myfunc.R 안에 있는 함수 실행
+a <- mydiv(20,4)   # 함수 호출
+b <- mydiv(30,4)   # 함수 호출
+a+b
+mydiv(mydiv(20,2),5) # 함수 호출
+```
+4. 조건에 맞는 데이터 위치 찾기
+```R
+score <- c(76, 84, 69, 50, 95, 60, 82, 71, 88, 84)
+which(score==69) # 성적이 69인 학생은 몇 번째?
+shich(score>=85) # 성적이 85 이상인 학생은 몇 번째?
+max(score) # 최고 점수는 몇 점?
+which.max(score) # 최고 점수는 몇 번째?
+min(score) # 최저 점수는 몇 점?
+which.min(score) # 최저 점수는 몇 번째?
+```
+```R
+score <- c(76, 84, 69, 50, 95, 60, 82, 71, 88, 84)
+idx <- which(score<=60) # 성적이 50 이하인 값들의 인덱스
+score[idx] <- 61 # 성적이 60 이하인 값들은 61점으로 성적 상향조정
+score # 상향조정된 성적 확인
+
+idx <- which(score>=80) # 성적이 80 이상인 값들의 인덱스
+score.high <- score[idx] # 성적이 80 이상인 값들만 추출하여 저장
+score.high # score.high의 내용 확인
+```
 ## 📅 230406
 6. iris 데이터셋
  - iris는 150그루의 붓꽃에 대해 4개 분야의 측정 데이터와 품종 정보를 결합하여 만든 데이터셋
