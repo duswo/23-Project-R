@@ -1,5 +1,76 @@
 # 👩 **2377112 이연재**
 ## 📓 R 언어
+## 📅 230504
+> 선그래프
+- 연도별 증감 추이와 같은 데이터 표현
+- 시간 순서에 따른 데이터를 시각화할 때 사용
+```R
+month = 1:12 # 월 데이터 입력
+late = c(5,8,7,9,4,6,12,13,8,6,6,4) # 각 월마다 지각생 수
+plot(month, # x 데이터 입력하기
+     late, # y 데이터 입력하기
+     main="Late students", # 메인 이름
+     type= "l", # 그래프의 종류 정하기
+     lty=1, # 선의 종류 정하기
+     lwd=1, # 선의 굵기 정하기
+     xlab="Month ", # x축 이름 정하기
+     ylab="Late cnt" # y축 이름 정하기
+)
+```
+> 복수 선그래프
+```R
+month = 1:12 # 월별 데이터 입력
+late2 = c(5,8,7,9,4,6,12,13,8,6,6,4) # 각 월마다 1반 지각생 데이터
+late1 = c(4,6,5,8,7,8,10,11,6,5,7,3) # 각 월마다 2반 지각생 데이터 입력
+plot(month, # x 데이터
+     late1, # y 데이터
+     main="Late students", # 메인 제목 입력
+     type= "b", # 그래프 초이스
+     lty=1, # 선의 종류 초이스
+     col="red", # 선의 색깔 초이스
+     xlab="Month ", # x축 레이블 입력
+     ylab="Late cnt" # y축 레이블 압력
+)
+
+lines(month,late2, # 선 별로 데이터 입력
+     type = "b",  # 그래프 종류 입력
+     col = "blue") # 색깔 입력
+```
+> 산점도
+- 다변량 자료 : 다변량 자료는 두개 이상의 변수를 동시에 다루는 자료
+- 일변량 자료는 vectcor, 다변량 자료는 matrix or data frame에 저장
+- 각 변수는 데이터셋에서의 열로 표현됨
+
+- mtcars 데이터셋에서 자동차 중량(wt)와 연비(mpg)의 상관관계의 산점도 (두 변수)
+```R
+wt <-mtcars$wt
+mpg <- mtcars$mpg
+plot(wt, mpg, # 2개 변수(x축,y축)
+main="Car_Weight-mpg", # 제목
+xlab="Car_Weight ", # x축 레이블
+ylab="Miles_Per_Gallon ", # y축 레이블
+col="red", # point 의 color
+pch=19) # point 의 종류
+```
+
+- pairs()(여러 변수)
+```R
+vars <- c("mpg","disp","drat","wt") # 대상 변수를 선언
+target <- mtcars[,vars] # target에 데이터 셋 입력
+pairs(target, # 대상 데이터와 연결
+main="Multi plots") # 메인 제목 입력
+```
+
+- 그룹 정보가 있는 2변량 데이터 분포
+```R
+iris.2 <- iris[,3:4] # 각 데이터 입력하기
+point <- as.numeric(iris$Species) # 각각 포인트 모양 정하기
+color <- c("red","green","blue") # 각각 포인트 컬러 정하기
+plot(iris.2, # 데이터 입력
+     main="Iris plot", # 제목 정하기     
+     pch=c(point), # 각각 포인트 모양 입력
+     col=color[point]) # 가각 포인트 컬러 입력
+```
 ## 📅 230427
 > 막대그래프
 1. 막대그래프 작성
