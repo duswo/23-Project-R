@@ -1,5 +1,108 @@
 # 👩 **2377112 이연재**
 ## 📓 R 언어
+## 📅 230518
+> 정렬(sort)
+- 주어진 기준에 따라 데이터를 크기순으로 재배열하는 과정
+```R
+v1 <- c(1,7,6,8,4,2,3)
+v1 <- sort(v1) # 오름차순
+v1
+[1] 1 2 3 4 6 7 8
+v2 <- sort(v1, decreasing=T) #내림차순
+v2
+[1] 8 7 6 4 3 2 1
+```
+- 내림차순으로 하려면 sort()함수의 매개변수 decreasing을 T(TRUE)로 설정
+1. 벡터의 정렬 (문자열)
+```R
+> name <- c('정대일','강재구','신현석','홍길동')
+> sort(name) # 오름차순
+[1] "강재구" "신현석" "정대일" "홍길동"
+> sort(name, decreasing=T) # 내림차순
+[1] "홍길동" "정대일" "신현석" "강재구"
+```
+- sort()함수 : 값의 크기에 따라 값들을 정렬하는 함수
+- order()함수 : 값의 크기에 따라 값들의 인덱스를 정렬하는 함수
+```R
+> name <= c('정대일', '강재구', '신현석', '홍길동')
+> order(name) # 오름차순
+[1] 2 3 1 4
+> order(name, decreasing=T) # 내림차순
+[1] 4 1 3 2
+
+# 값의 크기에 따라 오름차순으로 인덱스 정렬 후, 정렬된 인덱스를 이용하여 값 정렬
+> idx <- order(name)
+> name[idx] # 오름차순 정렬
+[1] "강재구" "신현석" "정대일" "홍길동"
+```
+2. 매트릭스와 데이터프레임의 정렬
+- 특정 열의 값들을 기준으로 행을 재배열하는 방법
+- iris 데이터셋에서 꽃임의 길이(Sepal.Length)를 기준으로 행을 재정렬하는 예
+```R
+head(iris)
+order(iris$Sepal.Length),]
+iris[order(iris$Sepal.Length),] # 오름차순으로 정렬
+iris[order(iris$Sepal.Length, decreasing=T),] # 내림차순으로 정렬
+iris.new <- iris[order(iris$Sepal.Length),] # 정렬된 데이터 저장
+head(iris.new)
+
+#정렬 기준이 2개인 경우
+iris[order(iris$Species, decreasing=T, iris$Petal.Length),]
+
+# iris데이터셋에 order() 함수를 정용하면 정렬되었을 때 어떤 모양인지를 보여줄 뿐 실제 iris 데이터셋이 정렬되는 것은 아님
+# 정렬 결과를 유지하기 위해서는 정렬 결과를 다른 곳(iris new)에 저장해야 함
+```
+3. 샘플링
+- 주어진 값들에서 임의의 개수만큼 값을 추출하는 작업
+- 여러 번 값을 추출할 때,
+  한 번 뽑은 값은 제외한 뒤 새로운 값을 추출하는 방식 -> 비복원 추출
+  뽑았던 값을 다시 포함시켜 새로운 값을 추출하는 방식 -> 복원 추출
+- 샘플리이 필요한 때,
+  데이터셋이 너무 커 분석에 시간이 많이 걸리는 경우, 일부의 데이터만 추출하여 대략의 결과를 미리 확인
+```R
+> x <- 1:100
+> y <- sample(x, size=10, replace=FALSE) # 비복원 추출
+> y
+[1] 57 90 20 86 50 85 49 1 60 38
+
+# sample() 함수에서 size는 추출할 값의 개수를 지정하는 매개변수
+# replace=FALSE는 비복원 추출
+```
+```R
+# 1 ~ 150 숫자 중 50개를 임의로 추출하여 idx에 저장
+# nrow() 함수는 행의 개수 반환
+idx <- sample(1:nrow(iris), size=50, replace=F)
+iris.50 <- iris[idx,] # 50개의 형 추출
+dim(iris.50) # 행과 열의 개수 확인
+head(iris.50)
+```
+- 임의 추출을 하되 재현가능한 결과가 피룡한 경우
+  sample() 함수 실행 직전에 set.seed() 함수를 먼저 실행
+```R
+sample(1:20, size=5)
+sample(1:20, size=5)
+sample(1:20, size=5)
+set.seed(100)
+sample(1:20, size=5)
+set.seed(100)
+sample(1:20, size=5)
+sample(1:20, size=5)
+```
+> 조합(combination)
+- 주어진 데이터값 중에서 몇 개씩 짝을 지어 추출하는 작업으로, combo() 함수 사용
+```R
+combn(1:5,3) # 1~5에서 3개를 뽑는 조합, 하나의 열이 하나의 조합
+x <- c("red","green","blue","black","white")
+com <- combn(x,2) # x의 원소를 2개씩 뽑는 조합
+com
+
+for(i in 1:ncol(com)) { # 조합을 출력
+    cat(com[,i], "\n")
+}
+```
+4. 집계(aggregation)
+- 데이터의 그룹에 대해 합계나 평균을 계산하는 작업
+- aggregate() 함수 사용
 ## 📅 230511
 > 다중변수 데이터 
 - 변수 간의 관계를 찾는 것이 중요
